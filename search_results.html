@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}بحث عن النتائج{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4 text-center">البحث عن نتائج الطلاب</h1>
+    
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <form method="POST" action="{{ url_for(\"index\") }}">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="أدخل اسم الطالب أو الرقم السري..." name="search_query" value="{{ search_query or \"\" }}" required>
+                    <button class="btn btn-primary" type="submit">بحث</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if results is not none %}
+        <h2 class="mt-5">نتائج البحث عن "{{ search_query }}"</h2>
+        {% if results %}
+            <div class="list-group mt-3">
+                {% for student in results %}
+                    <a href="{{ url_for(\"view_result_details\", secret_code=student.secret_code) }}" class="list-group-item list-group-item-action">
+                        {{ student.name }} (المدرسة: {{ student.school.name if student.school else \"غير محدد\" }})
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% if search_query %}
+                <p class="mt-3 text-center">لم يتم العثور على نتائج مطابقة.</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
+

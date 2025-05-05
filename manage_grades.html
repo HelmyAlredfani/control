@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة درجات {{ subject.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">إدارة درجات مادة: {{ subject.name }}</h1>
+    
+    <form method="POST" action="{{ url_for(\"manage_grades\", subject_id=subject.id) }}">
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">اسم الطالب</th>
+                    <th scope="col">الدرجة الحالية</th>
+                    <th scope="col">إدخال/تعديل الدرجة</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ student.name }}</td>
+                    <td>{{ results.get(student.id, \"-\") }}</td>
+                    <td>
+                        <input type="number" step="0.01" class="form-control form-control-sm" name="grade_{{ student.id }}" value="{{ results.get(student.id, \"\") }}" placeholder="أدخل الدرجة">
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">لا يوجد طلاب في هذه المدرسة حالياً.</td>
+                     {% if current_user.role == \"admin\" %}
+                        <p>يمكنك إضافة طلاب من خلال لوحة تحكم المدير (قريباً).</p>
+                     {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        <a href="{{ url_for(\"teacher_dashboard\") }}" class="btn btn-secondary">العودة إلى لوحة التحكم</a>
+    </form>
+</div>
+{% endblock %}
+

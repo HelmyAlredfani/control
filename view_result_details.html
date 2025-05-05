@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}تفاصيل نتيجة الطالب: {{ student.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">نتيجة الطالب: {{ student.name }}</h1>
+    <p><strong>المدرسة:</strong> {{ student.school.name if student.school else \"غير محدد\" }}</p>
+    <p><strong>الرقم السري:</strong> {{ student.secret_code }}</p>
+
+    <h2 class="mt-4">الدرجات</h2>
+    {% if results %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">المادة</th>
+                    <th scope="col">الدرجة</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result, subject in results %}
+                <tr>
+                    <td>{{ subject.name }}</td>
+                    <td>{{ result.grade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="mt-4">
+             <a href="{{ url_for(\"download_result\", secret_code=student.secret_code) }}" class="btn btn-success">تنزيل النتيجة (HTML)</a>
+             <a href="{{ url_for(\"index\") }}" class="btn btn-secondary">بحث جديد</a>
+        </div>
+
+    {% else %}
+        <p class="mt-3">لا توجد نتائج مسجلة لهذا الطالب حالياً.</p>
+         <a href="{{ url_for(\"index\") }}" class="btn btn-secondary">بحث جديد</a>
+    {% endif %}
+</div>
+{% endblock %}
+

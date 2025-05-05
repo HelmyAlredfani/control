@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}لوحة تحكم المدير{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">لوحة تحكم المدير</h1>
+    <p>مرحباً بك، {{ current_user.username }}!</p>
+    <p>هذه هي لوحة تحكم المدير. من هنا يمكنك إدارة المدارس، المعلمين، المواد، والطلاب.</p>
+    
+    <!-- Add links to management sections once implemented -->
+    <div class="list-group mt-4">
+        <a href="#" class="list-group-item list-group-item-action disabled">إدارة المدارس (قريباً)</a>
+        <a href="#" class="list-group-item list-group-item-action disabled">إدارة المعلمين (قريباً)</a>
+        <a href="#" class="list-group-item list-group-item-action disabled">إدارة المواد (قريباً)</a>
+        <a href="#" class="list-group-item list-group-item-action disabled">إدارة الطلاب (قريباً)</a>
+        <a href="{{ url_for(\"teacher_dashboard\") }}" class="list-group-item list-group-item-action">الانتقال إلى لوحة تحكم المعلم (لعرض/إدارة الدرجات)</a>
+    </div>
+</div>
+{% endblock %}
+

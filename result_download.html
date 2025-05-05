@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>نتيجة الطالب: {{ student.name }}</title>
+  <style>
+    body { font-family: sans-serif; direction: rtl; padding: 20px; }
+    h1, h2 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: right; }
+    th { background-color: #f2f2f2; }
+    .print-button { display: none; } /* Hide button in print view */
+    @media print {
+        .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>نتيجة الطالب</h1>
+<h2>{{ student.name }}</h2>
+<p><strong>المدرسة:</strong> {{ student.school.name if student.school else "غير محدد" }}</p>
+<p><strong>الرقم السري:</strong> {{ student.secret_code }}</p>
+
+<h3>الدرجات</h3>
+{% if results %}
+    <table>
+        <thead>
+            <tr>
+                <th>المادة</th>
+                <th>الدرجة</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result, subject in results %}
+            <tr>
+                <td>{{ subject.name }}</td>
+                <td>{{ result.grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>لا توجد نتائج مسجلة لهذا الطالب حالياً.</p>
+{% endif %}
+
+<div style="margin-top: 30px; text-align: center;" class="no-print">
+    <button onclick="window.print();">طباعة النتيجة</button>
+</div>
+
+</body>
+</html>
+

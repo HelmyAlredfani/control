@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}لوحة تحكم المعلم{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">لوحة تحكم المعلم</h1>
+    <p>مرحباً بك، {{ current_user.username }}!</p>
+    
+    {% if current_user.role == \"teacher\" %}
+        <p>هذه هي لوحة تحكم المعلم. من هنا يمكنك إدارة درجات المواد المسندة إليك.</p>
+    {% elif current_user.role == \"admin\" %}
+        <p>أنت تقوم بعرض لوحة تحكم المعلم بصلاحيات المدير. يمكنك إدارة درجات جميع المواد.</p>
+    {% endif %}
+
+    <h2 class="mt-4">المواد الدراسية</h2>
+    {% if subjects %}
+        <div class="list-group">
+            {% for subject in subjects %}
+                <a href="{{ url_for(\"manage_grades\", subject_id=subject.id) }}" class="list-group-item list-group-item-action">
+                    إدارة درجات: {{ subject.name }}
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>لا توجد مواد مسندة حالياً.</p>
+        {% if current_user.role == \"admin\" %}
+         <p>يمكنك إضافة مواد وإسنادها للمعلمين من خلال لوحة تحكم المدير (قريباً).</p>
+        {% endif %}
+    {% endif %}
+    
+    {% if current_user.role == \"teacher\" %}
+        <p class="mt-3"><a href="{{ url_for(\"admin_dashboard\") }}" class="btn btn-secondary">العودة إلى لوحة تحكم المدير</a> (إذا كنت تملك الصلاحية)</p>
+    {% endif %}
+</div>
+{% endblock %}
+
